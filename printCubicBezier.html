@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>printCubicBezier</title>
+    <script type="text/javascript" src="js/canvasObject.js"></script>
+    <script type="text/javascript" src="js/print.js"></script>
+    <style type="text/css">
+      * {
+        margin: 0;
+      }
+
+      #canvas {
+        border-style: solid;
+        border-color: #5bb028;
+        margin: 10px;
+      }
+
+      #print {
+        border-style: solid;
+        height: 400px;
+        width: 600px;
+        display: inline-block;
+        margin-left: 40px;
+        border-radius: 20px;
+        vertical-align: top;
+        margin-top: 20px;
+        padding: 20px;
+        font-size: 20px;
+      }
+
+      #print p {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas><pre id="print">
+    </pre>
+  </body>
+  <script type="text/javascript">
+    var canvas= document.getElementById("canvas")
+    var canvasManage = new CanvasManage(canvas);
+    var start = canvasManage.createElement("circle")
+    var end = canvasManage.createElement("circle")
+    var c1 = canvasManage.createElement("circle")
+    var c2 = canvasManage.createElement("circle")
+    var bezierLink = canvasManage.createElement("cubicBezierLink", start, end, c1, c2)
+    canvasManage.drawFrame();
+    var printPre = document.getElementById("print")
+    setInterval(function() {  //使用间隔调用比，添加事件等简单
+      //但是这样会导致文本无法被选中的问题
+      var printText = `  var canvas= document.getElementById("canvas")
+
+    ctx = canvas.getContext("2d")
+
+    this.path.moveTo(${start.x}, ${start.y});
+
+    this.path.bezierCurveTo(${c1.x}, ${c1.y}, ${c2.x}, ${c2.y}, ${end.x}, ${end.y})
+
+    ctx.fill()`
+
+    if(printPre.innerText == printText) {
+      //什么也不做
+    } else {
+      printPre.innerText = printText
+    }
+  }, 200)
+
+  </script>
+</html>
